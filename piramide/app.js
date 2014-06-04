@@ -10,7 +10,7 @@ function Pyramid(base){
 	this.symbols = {
 		pad : '@',
 		wrap : '*',
-		blank : '&nbsp;'
+		blank : '-'
 	};
 
 	this.base = parseInt(base); // Number
@@ -42,26 +42,26 @@ Pyramid.prototype = {
 		while(base-(c*2)>1){c++;}
 		return c+1;
 	},
-	
+
 	createPyramid : function(){
-		var row = blankSpaces = at = atString = sideBsp = null;
+		var row = atString = sideBsp = null;
+		var at = blankSpaces = 0;
 		var lastIteration = this.data.length;
 		
 		this.data.forEach(function(e,i,a){
-			blankSpaces = (2*i);
 			row = e.join('');
-			if(blankSpaces != 0 ){			
+			blankSpaces = (2*i);
+			if(blankSpaces != 0 ){
 				// The second loop and so on. The first one is full of *. We already got it.
 				// Now and then blankSpaces is divisible by 2 and greater than 1
 				// Ahora necesito reemplazar los caracteres 
 				// Get the at's string
-				//1º How many ats?? 2: quantity of wrap symbols, one on each side
+				// 1º How many ats?? 2: quantity of wrap symbols, one on each side
 				at = Math.abs(this.base - blankSpaces - 2);
 				atString = this.createString(at, this.symbols.pad);
 				sideBsp  = this.createString(blankSpaces/2, this.symbols.blank);
 				
 				if(lastIteration != i+1){
-
 					row = sideBsp + this.symbols.wrap + atString + this.symbols.wrap + sideBsp;
 				}else{
 					// Last iteration
@@ -93,7 +93,6 @@ window.addEventListener('DOMContentLoaded',function(e){
 		
 		var lis = document.createDocumentFragment();
 		var i=0,max=result.length, li;
-		console.log(result);
 		for(;i<max;i++){
 			li = document.createElement('li');
 			li.innerHTML = result[i].join('');
