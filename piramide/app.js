@@ -7,9 +7,13 @@ pyramid = [
 
 function Pyramid(base){
 	
+	this.symbols = {
+		pad : '@',
+		wrap : '*',
+		blank : '&nbsp;'
+	};
+
 	this.base = parseInt(base); // Number
-	this.pad  = '@';
-	this.wrap = '*';
 	this.data = [];
 	this.output = [];
 }
@@ -23,11 +27,12 @@ Pyramid.prototype = {
 			var row = [];
 			
 			for(var x=0;x<this.base;x++){
-				row.push(this.wrap);
+				row.push(this.symbols.wrap);
 			}
 			this.data.push(row);
 		}
 		this.createPyramid();
+		return this.output;
 	},
 	// Get the matrix rows quantity
 	// Para calcular esa cantidad se fija que la resta de la base por un multiplo de 2 sea mayor a uno, cuando llega a uno
@@ -52,19 +57,18 @@ Pyramid.prototype = {
 				// Get the at's string
 				//1º How many ats?? 2: quantity of wrap symbols, one on each side
 				at = Math.abs(this.base - blankSpaces - 2);
-				atString = this.createString(at, this.pad);
-				sideBsp  = this.createString(blankSpaces/2, '-');
+				atString = this.createString(at, this.symbols.pad);
+				sideBsp  = this.createString(blankSpaces/2, this.symbols.blank);
 				
 				if(lastIteration != i+1){
 
-					row = sideBsp + this.wrap + atString + this.wrap + sideBsp;
+					row = sideBsp + this.symbols.wrap + atString + this.symbols.wrap + sideBsp;
 				}else{
 					// Last iteration
-					row = sideBsp + this.wrap + sideBsp;
+					row = sideBsp + this.symbols.wrap + sideBsp;
 				}
 			}
-			console.log(row);
-			this.output.push(row.split(''));
+			this.output.unshift(row.split(''));
 		},this);
 	},
 	
@@ -84,6 +88,18 @@ window.addEventListener('DOMContentLoaded',function(e){
 		var base = document.querySelector('#base').value;
 		var pyramid = new Pyramid(base);
 		var result = pyramid.create();
+		
+		if(!result.length) throw new Exception('Error');
+		
+		var lis = document.createDocumentFragment();
+		var i=0,max=result.length, li;
+		console.log(result);
+		for(;i<max;i++){
+			li = document.createElement('li');
+			li.innerHTML = result[i].join('');
+			lis.appendChild(li);
+		}
+		document.querySelector('#viewport ul').appendChild(lis);
 	},false);
 },false);
 
