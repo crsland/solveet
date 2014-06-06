@@ -98,12 +98,12 @@ class FriendNumber{
 		return $factors;
 	}
 	
-	private function _getDivisorsSum(){
+	private function _getDivisorsQuantity(){
 		
 		$factorsA = $this->_getFactors($this->a);
 		$factorsB = $this->_getFactors($this->b);
 		
-		
+		for()
 		
 		return array(
 			'a' => array(),
